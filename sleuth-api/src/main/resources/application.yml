@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: PocApi
+  zipkin:
+    baseUrl: http://localhost:9411/
+server:
+  port: 9081
+  servlet:
+    contextPath: /poc-api
+
+http:
+  timeout: 10s
+  debug: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: env, configprops
+  endpoint:
+    health:
+      show-details: always
+      circuitbreakers:
+        enabled: true
+
+

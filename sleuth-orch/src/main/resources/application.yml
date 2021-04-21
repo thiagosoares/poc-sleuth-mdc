@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: PocOrch
+  sleuth:
+    log:
+      slf4j:
+        whitelisted-mdc-keys: my-custom-key
+
+server:
+  port: 9080
+  servlet:
+    contextPath: /poc-orch
+
+http:
+  timeout: 10s
+  debug: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: env, configprops
+  endpoint:
+    health:
+      show-details: always
+      circuitbreakers:
+        enabled: true
+
+#logging:
+#  config: classpath:slf4j.xml

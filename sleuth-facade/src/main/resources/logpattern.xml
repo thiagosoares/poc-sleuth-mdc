@@ -1,0 +1,16 @@
+<configuration>
+
+    <springProperty scope="context" name="applicationName" source="spring.application.name"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout>
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] [${applicationName:-}, %X{X-B3-TraceId:-}, %X{X-B3-SpanId:-}, %X{X-Span-Export:-}] [TraceId:%X{TraceId}] %-5level%logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

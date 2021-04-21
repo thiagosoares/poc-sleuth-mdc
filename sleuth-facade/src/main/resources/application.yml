@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: PocFacade
+  zipkin:
+    baseUrl: http://localhost:9411/
+  cloud:
+    config:
+      uri: http://localhost:9411/
+server:
+  port: 9082
+  servlet:
+    contextPath: /poc-facade
+
+http:
+  timeout: 10s
+  debug: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: env, configprops
+  endpoint:
+    health:
+      show-details: always
+      circuitbreakers:
+        enabled: true
+
+
+# CONFIG - Log
+logging:
+  config: classpath:logpattern.xml
+  #  config: classpath:log4j2-logstash.txt
+  #  config: classpath:logback-spring.txt
+  level:
+    org:
+      springframework: ERROR
+      springframework.context.support.ResourceBundleMessageSource: ERROR
+      spring: ERROR
+      hibernate:
+        SQL: INFO
+        type.descriptor.sql.BasicBinder: INFO
+    liquibase: INFO
