@@ -48,7 +48,8 @@ class WebClientConfig(
             next.exchange(
                 ClientRequest.from(request)
                     .headers { headers: HttpHeaders ->
-                        headers.add(LoggerContext.TRACE_ID_HEADER, MDC.get(LoggerContext.TRACE_ID))
+                        headers.add(LoggerContext.TRACE_ID_HEADER, MDC.get(LoggerContext
+                            .TRACE_ID) ?: "XXXX")
                     }
                     .build()
             )
@@ -69,4 +70,6 @@ class WebClientConfig(
                             WriteTimeoutHandler(timeout.toSecondsPart()))
                 }
     }
+
+
 }

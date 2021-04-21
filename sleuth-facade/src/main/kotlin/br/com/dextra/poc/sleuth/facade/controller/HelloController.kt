@@ -2,9 +2,14 @@ package br.com.dextra.poc.sleuth.facade.controller
 
 import br.com.dextra.poc.sleuth.facade.service.HelloResponse
 import br.com.dextra.poc.sleuth.facade.service.HelloService
+import brave.Tracer
+import brave.Tracing
+import brave.propagation.B3Propagation
+import brave.propagation.ExtraFieldPropagation
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import mu.KotlinLogging
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -20,19 +25,14 @@ class HelloController(
 
     private val logger = KotlinLogging.logger {}
 
+//    @Autowired
+//    private lateinit var tracer: Tracer
+
     @GetMapping
     @ApiOperation("hello")
     fun hello(
         @RequestParam("id") id: String
     ): HelloResponse {
-
-       /* LoggerContext.initialize(
-            LoggerContext.OPERATION_ID, LoggerContext.generateUUID()
-        ).use {
-            return service.hello(id).also {
-                logger.info("hello: objectId=$id")
-            }
-        }*/
 
         logger.info("hello: objectId=$id")
 

@@ -1,8 +1,6 @@
 package br.com.dextra.poc.sleuth.facade.config
 
 import br.com.dextra.poc.sleuth.facade.logger.LoggerContext
-import java.io.BufferedReader
-import java.time.Duration
 import mu.KotlinLogging
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
@@ -15,10 +13,10 @@ import org.springframework.http.MediaType
 import org.springframework.http.client.BufferingClientHttpRequestFactory
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
-import org.springframework.http.client.ClientHttpResponse
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.client.RestTemplate
+import java.time.Duration
 
 @Configuration
 class RestTemplateConfig {
