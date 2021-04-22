@@ -2,9 +2,14 @@ spring:
   application:
     name: PocOrch
   sleuth:
-    log:
-      slf4j:
-        whitelisted-mdc-keys: my-custom-key
+    baggage-keys:
+      - AleloTraceId
+      - XAleloTraceId
+      - baggage
+    log.slf4j.whitelisted-mdc-keys:
+      - AleloTraceId
+      - XAleloTraceId
+      - baggage
 
 server:
   port: 9080
@@ -27,5 +32,15 @@ management:
       circuitbreakers:
         enabled: true
 
-#logging:
-#  config: classpath:slf4j.xml
+# CONFIG - Log
+logging:
+  config: classpath:logpattern.xml
+  level:
+    org:
+      springframework: ERROR
+      springframework.context.support.ResourceBundleMessageSource: ERROR
+      spring: ERROR
+      hibernate:
+        SQL: INFO
+        type.descriptor.sql.BasicBinder: INFO
+    liquibase: INFO

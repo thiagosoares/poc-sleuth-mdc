@@ -1,4 +1,4 @@
-package br.com.dextra.poc.sleuth.facade.logger
+package br.com.dextra.poc.sleuth.orch.filter
 
 import brave.propagation.ExtraFieldPropagation
 import org.slf4j.MDC;

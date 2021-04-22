@@ -1,4 +1,4 @@
-package br.com.dextra.poc.sleuth.facade.logger
+package br.com.dextra.poc.sleuth.api.filter
 
 import brave.propagation.ExtraFieldPropagation
 import org.slf4j.MDC;
@@ -14,7 +14,6 @@ object LoggerContext {
     const val TRACE_ID_HEADER = "X-alelo-traceid"
 
     var data: ThreadLocal<DataInfo> = ThreadLocal<DataInfo>()
-
 
     fun initialize(vararg args: String?): AttributeInfoCloseable {
 

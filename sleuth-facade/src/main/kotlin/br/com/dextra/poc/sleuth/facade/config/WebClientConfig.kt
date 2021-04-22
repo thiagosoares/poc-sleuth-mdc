@@ -1,6 +1,7 @@
 package br.com.dextra.poc.sleuth.facade.config
 
 import br.com.dextra.poc.sleuth.facade.logger.LoggerContext
+import brave.propagation.ExtraFieldPropagation
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
@@ -13,10 +14,12 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.reactive.function.client.ClientRequest
+import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.ExchangeFilterFunctions
 import org.springframework.web.reactive.function.client.ExchangeFunction
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
 import reactor.netty.tcp.TcpClient
 import java.time.Duration
@@ -38,7 +41,9 @@ class WebClientConfig(
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .filter(traceIdFilter())
-                .filter(ExchangeFilterFunctions.basicAuthentication("user", "password"))
+//                .filter(mdcFilter)
+//                .filter(logRequest)
+//                .filter(logResponse)
                 .build()
     }
 
@@ -48,7 +53,8 @@ class WebClientConfig(
             next.exchange(
                 ClientRequest.from(request)
                     .headers { headers: HttpHeaders ->
-                        headers.add(LoggerContext.TRACE_ID_HEADER, MDC.get(LoggerContext.TRACE_ID))
+                        headers.add(LoggerContext.TRACE_ID_HEADER,
+                            MDC.get(LoggerContext.TRACE_ID) ?: ExtraFieldPropagation.get("XAleloTraceId"))
                     }
                     .build()
             )
@@ -69,4 +75,31 @@ class WebClientConfig(
                             WriteTimeoutHandler(timeout.toSecondsPart()))
                 }
     }
+
+    var logRequest: ExchangeFilterFunction = ExchangeFilterFunction.ofRequestProcessor { clientRequest: ClientRequest ->
+//        println("MDC Req=" + MDC.getCopyOfContextMap())
+        Mono.just(clientRequest)
+    }
+
+    var logResponse: ExchangeFilterFunction = ExchangeFilterFunction.ofResponseProcessor { clientResponse: ClientResponse ->
+//        println("MDC Resp=" + MDC.getCopyOfContextMap())
+        Mono.just(clientResponse)
+    }
+
+    var mdcFilter: ExchangeFilterFunction = ExchangeFilterFunction { request: ClientRequest?, next: ExchangeFunction ->
+        // here runs on main(request's) thread
+        val map =
+            MDC.getCopyOfContextMap()
+
+//        println("MDC Filter=$map")
+
+        next.exchange(request)
+            .doOnRequest { value: Long ->
+                // here runs on reactor's thread
+                if (map != null) {
+                    MDC.setContextMap(map)
+                }
+            }
+    }
+
 }

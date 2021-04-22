@@ -5,7 +5,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout>
             <Pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] [${applicationName:-}, %X{X-B3-TraceId:-}, %X{X-B3-SpanId:-}, %X{X-Span-Export:-}] [TraceId:%X{AleloTraceId}], XAleloTraceId:%X{XAleloTraceId:-},  baggage:%X{baggage:-} %-5level%logger{36} - %msg%n
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] [${applicationName:-}, %X{X-B3-TraceId:-}, %X{X-B3-SpanId:-}, %X{X-Span-Export:-}] [TraceId:%X{AleloTraceId}] %-5level%logger{36} - %msg%n
             </Pattern>
         </layout>
     </appender>

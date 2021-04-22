@@ -72,10 +72,9 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
-//    compile group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: '2020.0.2', ext: 'pom'
-//    compile 'org.springframework.cloud:spring-cloud-starter-bootstrap'
     compile 'org.springframework.cloud:spring-cloud-starter-config'
     implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
+//    implementation "org.springframework.cloud:spring-cloud-sleuth-zipkin"
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 

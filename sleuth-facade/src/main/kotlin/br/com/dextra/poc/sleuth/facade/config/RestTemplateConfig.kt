@@ -1,6 +1,7 @@
 package br.com.dextra.poc.sleuth.facade.config
 
 import br.com.dextra.poc.sleuth.facade.logger.LoggerContext
+import brave.propagation.ExtraFieldPropagation
 import java.io.BufferedReader
 import java.time.Duration
 import mu.KotlinLogging
@@ -57,7 +58,7 @@ class RestTemplateConfig {
                                               requestExecution: ClientHttpRequestExecution ->
             httpRequest.headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
             // TODO Importante: enviar o X-alelo-traceid nas requisições
-            httpRequest.headers.add(LoggerContext.TRACE_ID_HEADER, MDC.get(LoggerContext.TRACE_ID))
+            httpRequest.headers.add(LoggerContext.TRACE_ID_HEADER,MDC.get(LoggerContext.TRACE_ID) ?: ExtraFieldPropagation.get("XAleloTraceId"))
             val response = requestExecution.execute(httpRequest, bytes)
             response
         }

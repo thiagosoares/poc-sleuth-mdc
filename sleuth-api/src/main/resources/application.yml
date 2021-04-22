@@ -3,6 +3,17 @@ spring:
     name: PocApi
   zipkin:
     baseUrl: http://localhost:9411/
+  sleuth:
+    baggage-keys:
+      - AleloTraceId
+      - XAleloTraceId
+      - baggage
+    log.slf4j.whitelisted-mdc-keys:
+      - AleloTraceId
+      - XAleloTraceId
+      - baggage
+
+
 server:
   port: 9081
   servlet:
@@ -24,4 +35,15 @@ management:
       circuitbreakers:
         enabled: true
 
-
+# CONFIG - Log
+logging:
+  config: classpath:logpattern.xml
+  level:
+    org:
+      springframework: ERROR
+      springframework.context.support.ResourceBundleMessageSource: ERROR
+      spring: ERROR
+      hibernate:
+        SQL: INFO
+        type.descriptor.sql.BasicBinder: INFO
+    liquibase: INFO

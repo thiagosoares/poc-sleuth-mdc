@@ -1,4 +1,4 @@
-package br.com.dextra.poc.sleuth.facade.logger
+package br.com.dextra.poc.sleuth.orch.filter
 
 import org.slf4j.MDC
 import org.springframework.stereotype.Component

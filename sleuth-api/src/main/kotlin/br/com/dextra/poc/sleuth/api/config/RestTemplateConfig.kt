@@ -1,8 +1,11 @@
 package br.com.dextra.poc.sleuth.api.config
 
+import br.com.dextra.poc.sleuth.api.filter.LoggerContext
+import brave.propagation.ExtraFieldPropagation
 import java.io.BufferedReader
 import java.time.Duration
 import mu.KotlinLogging
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
@@ -53,6 +56,8 @@ class RestTemplateConfig {
                                               bytes: ByteArray,
                                               requestExecution: ClientHttpRequestExecution ->
             httpRequest.headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+            httpRequest.headers.add(LoggerContext.TRACE_ID_HEADER,
+                MDC.get(LoggerContext.TRACE_ID) ?: ExtraFieldPropagation.get("XAleloTraceId"))
             traceRequest(httpRequest, bytes)
             val response = requestExecution.execute(httpRequest, bytes)
             traceResponse(response)
